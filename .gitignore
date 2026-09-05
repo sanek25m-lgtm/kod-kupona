@@ -1,0 +1,35 @@
+# Секреты и пароли — НИКОГДА не коммитить
+.env
+*.env
+*.session
+*.session-journal
+passwords.json
+
+# Зависимости и рантаймы
+node_modules/
+.venv/
+__pycache__/
+tools/
+
+# Кэш, логи, временные файлы
+.cache/
+*.tmp
+*.log
+dl.log
+
+# Служебное (не часть публикуемого сайта)
+work/
+bot/
+dist/
+auto-update.js
+dev-server.js
+server.js
+build.js
+nginx*.conf
+Dockerfile
+docker-compose*.yml
+signal.compose.yml
+
+# Операционная система
+.DS_Store
+Thumbs.db

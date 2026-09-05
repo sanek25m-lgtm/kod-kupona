@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Код купона — скидки и промокоды</title>
+  <meta name="description" content="Код купона — лучшие промокоды и скидки от магазинов. Экономьте до 90% каждый день." />
+  <link rel="canonical" href="https://sanek25m-lgtm.github.io/kod-kupona/" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏷️</text></svg>" />
+  <meta property="og:title" content="Код купона — скидки и промокоды" />
+  <meta property="og:image" content="/og-image.svg" />
+  <meta property="og:url" content="https://sanek25m-lgtm.github.io/kod-kupona/" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Код купона","url":"https://sanek25m-lgtm.github.io/kod-kupona/"}</script>
+</head>
+<body class="has-sidebar">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand"><span class="brand-icon">🏷️</span><span class="brand-text">Код<span class="brand-accent">купона</span></span></a>
+      <nav>
+        <a href="index.html" class="nav-link active" data-i18n="nav_home">Главная</a>
+        <a href="top.html" class="nav-link" data-i18n="nav_top">Топ скидки</a>
+        <a href="blog.html" class="nav-link" data-i18n="nav_blog">Блог</a>
+        <a href="#faq" class="nav-link" data-i18n="nav_faq">Как пользоваться</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" title="Тёмная тема">🌙</button>
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="uz">UZ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- LEFT SIDEBAR: A-Z -->
+    <aside class="sidebar" id="sidebar">
+      <h3 class="sidebar-title">Магазины А–Я</h3>
+      <div class="alphabet" id="alphabet"></div>
+      <div class="merchant-list" id="merchant-list"></div>
+
+      <!-- TELEGRAM CTA (пункт 10) -->
+      <div class="tg-cta">
+        <p data-i18n="tg_text">📲 Новые купоны — в Telegram</p>
+        <a href="https://t.me/kupony_ru" target="_blank" rel="nofollow noopener" class="tg-btn" data-i18n="tg_btn">Подписаться</a>
+      </div>
+
+      <!-- FAVORITES (пункт 5) -->
+      <div class="fav-section" id="fav-section" style="display:none;">
+        <h3 class="sidebar-title" data-i18n="favorites">❤️ Избранное</h3>
+        <div class="merchant-list" id="fav-list"></div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- GREETING (пункт 9) -->
+      <div class="greeting" id="greeting"></div>
+
+      <!-- LIVE FEED (пункт 1) -->
+      <div class="live-feed" id="live-feed">
+        <span class="feed-dot"></span>
+        <span class="feed-text" id="feed-text"></span>
+      </div>
+
+      <!-- COUNTER (пункт 3) -->
+      <div class="counter-bar">
+        <span><span data-i18n="counter_text">⚡ За сегодня активировано:</span> <strong id="counter-num">0</strong></span>
+      </div>
+
+      <!-- HERO -->
+      <section class="hero-compact">
+        <h1 class="hero-title-sm">Скидки до <span class="highlight">90%</span></h1>
+        <div class="search-box">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Магазин или товар..." id="search-input" autocomplete="off" />
+          <button class="search-btn" onclick="filterCards()">Найти</button>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <!-- CATEGORY CHIPS -->
+      <div class="cat-chips" id="cat-chips"></div>
+
+      <div class="results-bar">
+        <span id="count">Загрузка...</span>
+      </div>
+
+      <!-- CARDS GRID -->
+      <section class="grid" id="card-grid">
+        <div class="skeleton-grid">
+          <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line w60"></div><div class="sk-line w80"></div></div>
+          <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line w60"></div><div class="sk-line w80"></div></div>
+        </div>
+      </section>
+
+      <div class="load-more" id="load-more" style="display:none">
+        <button class="btn-secondary" onclick="loadMore()">Показать ещё</button>
+      </div>
+
+
+
+      <!-- FAQ (пункт 6) -->
+      <section class="faq-section" id="faq">
+        <h2 class="section-title">❓ Как пользоваться промокодами</h2>
+        <div class="faq-list">
+          <details><summary>Где вводить промокод?</summary><p>На сайте магазина найдите поле «Промокод» или «Код скидки». Обычно оно на странице оформления заказа, рядом с итоговой суммой.</p></details>
+          <details><summary>Почему код не работает?</summary><p>Проверьте: 1) срок действия купона; 2) минимальную сумму заказа; 3) распространяется ли скидка на ваш товар. Если проблема — напишите нам в Telegram.</p></details>
+          <details><summary>Сколько раз можно использовать один код?</summary><p>Обычно 1 раз на одного покупателя. Некоторые коды работают многократно — это указано в описании купона.</p></details>
+          <details><summary>Как узнать, что купон актуален?</summary><p>Мы проверяем каждый купон вручную. Бейдж «✅ Проверено сегодня» означает, что код протестирован в течение 24 часов.</p></details>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR: HOT COUPONS -->
+    <aside class="right-sidebar" id="hot-section" style="display:none;">
+      <h3 class="section-title">🔥 Истекают</h3>
+      <div class="hot-list" id="hot-grid"></div>
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-bottom"><p>&copy; 2026 Код купона · Все права защищены</p></div>
+  </footer>
+
+  <script src="common.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

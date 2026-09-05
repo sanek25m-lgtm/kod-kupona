@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Магазин — Код купона</title>
+  <meta name="description" id="page-desc" content="Все актуальные промокоды и скидки магазина." />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"","url":""}</script>
+</head>
+<body class="has-sidebar">
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand"><span class="brand-icon">🏷️</span><span class="brand-text">Код<span class="brand-accent">купона</span></span></a>
+      <nav>
+        <a href="index.html" class="nav-link" data-i18n="nav_home">Главная</a>
+        <a href="top.html" class="nav-link" data-i18n="nav_top">Топ скидки</a>
+        <a href="blog.html" class="nav-link" data-i18n="nav_blog">Блог</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle">🌙</button>
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="uz">UZ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1200px;margin:0 auto;padding:32px 20px;">
+    <!-- Store header -->
+    <div class="store-header" id="store-header">
+      <div class="store-logo" id="store-logo"><span class="no-logo">?</span></div>
+      <div>
+        <h1 id="store-name" style="font-size:1.6rem;font-weight:800;">Загрузка...</h1>
+        <p id="store-info" style="color:var(--text-secondary);font-size:.9rem;margin-top:4px;"></p>
+      </div>
+    </div>
+
+    <!-- Store Schema.org -->
+    <script type="application/ld+json" id="store-schema"></script>
+
+    <!-- Coupons grid -->
+    <section class="grid" id="card-grid">
+      <p style="grid-column:1/-1;text-align:center;padding:2rem;">Загрузка купонов...</p>
+    </section>
+  </main>
+
+  <footer><div class="footer-bottom"><p>&copy; 2026 Код купона · Все права защищены</p></div></footer>
+
+  <script src="common.js"></script>
+  <script src="store.js"></script>
+</body>
+</html>

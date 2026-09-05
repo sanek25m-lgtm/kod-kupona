@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Топ скидок — Код купона</title>
+  <meta name="description" content="Самые выгодные скидки от магазинов. Топ промокодов недели." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sanek25m-lgtm.github.io/kod-kupona/top.html" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span data-i18n-html="topbar_top">🔥 Топ <strong>60</strong> самых выгодных скидок</span>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">🏷️</span>
+        <span class="brand-text">Код<span class="brand-accent">купона</span></span>
+      </a>
+      <nav>
+        <a href="index.html" class="nav-link" data-i18n="nav_home">Главная</a>
+        <a href="top.html" class="nav-link active" data-i18n="nav_top">Топ скидки</a>
+        <a href="blog.html" class="nav-link" data-i18n="nav_blog">Блог</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle">🌙</button>
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="zh">中文</button>
+          <button class="lang-btn" data-lang="uz">UZ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero-title" data-i18n-html="top_hero_title">🔥 Топ скидок<br><span class="highlight">до 90%</span></h1>
+    <p class="hero-sub" data-i18n="top_hero_sub">Лучшие предложения от магазинов — отсортированы по размеру скидки</p>
+    <div class="search-box">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Поиск по скидкам..." id="search-input" autocomplete="off" />
+      <button class="search-btn" onclick="renderCards()">Найти</button>
+    </div>
+  </section>
+
+  <div class="results-bar">
+    <span id="count">Загрузка...</span>
+    <span class="results-sort" data-i18n="sort_by_discount">Сортировка: по размеру скидки ↓</span>
+  </div>
+
+  <section class="grid" id="card-grid">
+    <div class="skeleton-grid">
+      <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line w60"></div><div class="sk-line w80"></div><div class="sk-line w40"></div></div>
+      <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line w60"></div><div class="sk-line w80"></div><div class="sk-line w40"></div></div>
+      <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line w60"></div><div class="sk-line w80"></div><div class="sk-line w40"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>🏷️ Код<span style="color:#818CF8">купона</span></span>
+        <p data-i18n="footer_desc">Самый большой каталог промокодов и скидок</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n="nav_home">Главная</a>
+        <a href="top.html" data-i18n="nav_top">Топ скидки</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Код купона</p></div>
+  </footer>
+
+  <script src="common.js"></script>
+  <script src="top.js"></script>
+</body>
+</html>
