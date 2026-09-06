@@ -1,0 +1,41 @@
+name: Refresh coupons
+
+on:
+  # Ежедневное автообновление купонов. Время можно менять (UTC).
+  schedule:
+    - cron: "0 3 * * *"
+  # Ручной запуск из вкладки Actions.
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download and transform coupons
+        run: node refresh.js
+        env:
+          GDESLON_API_TOKEN: ${{ secrets.GDESLON_API_TOKEN }}
+          PAGES_BASE: "https://sanek25m-lgtm.github.io/kod-kupona"
+
+      - name: Commit and push
+        run: |
+          git config user.name "kod-kupona-bot"
+          git config user.email "kod-kupona-bot@users.noreply.github.com"
+          git add coupons_data.json sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Данные не изменились — коммит пропущен"
+            exit 0
+          fi
+          git commit -m "chore: refresh coupons"
+          git push
