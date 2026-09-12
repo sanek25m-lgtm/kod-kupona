@@ -18,7 +18,7 @@ function getSorted() {
   const filtered = data.filter(item => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
-    return item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || item.merchant.toLowerCase().includes(q);
+    return (item.name+' '+couponTranslate(item.name)).toLowerCase().includes(q) || (item.desc+' '+couponTranslate(item.desc)).toLowerCase().includes(q) || item.merchant.toLowerCase().includes(q);
   });
   return filtered.sort((a, b) => getDiscount(b.name) - getDiscount(a.name));
 }

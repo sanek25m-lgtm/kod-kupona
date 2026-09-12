@@ -1,7 +1,8 @@
 // ========== COMMON.JS — Тема + Язык (все страницы) ==========
 
 // ===== THEME =====
-let theme = localStorage.getItem('theme') || 'light';
+let theme = 'light';
+try { theme = localStorage.getItem('theme') || 'light'; } catch (_) {}
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', theme);
   const btn = document.getElementById('theme-toggle');
@@ -30,7 +31,7 @@ const i18n = {
     coupon_forms: 'купон,купона,купонов', shop_forms: 'магазин,магазина,магазинов',
     verified: '✅ Проверено сегодня', faq_title: '❓ Как пользоваться промокодами',
     faq_q1: 'Где вводить промокод?', faq_a1: 'На сайте магазина найдите поле «Промокод» или «Код скидки». Обычно оно на странице оформления заказа, рядом с итоговой суммой.',
-    faq_q2: 'Почему код не работает?', faq_a2: 'Проверьте: 1) срок действия купона; 2) минимальную сумму заказа; 3) распространяется ли скидка на ваш товар. Если проблема — напишите нам в Telegram.',
+    faq_q2: 'Почему код не работает?', faq_a2: 'Проверьте: 1) срок действия купона; 2) минимальную сумму заказа; 3) распространяется ли скидка на ваш товар. Если проблема сохраняется, обратитесь в поддержку магазина.',
     faq_q3: 'Сколько раз можно использовать один код?', faq_a3: 'Обычно 1 раз на одного покупателя. Некоторые коды работают многократно — это указано в описании купона.',
     faq_q4: 'Как узнать, что купон актуален?', faq_a4: 'Срок и условия поступают из партнёрского фида. Это не проверка в корзине: перед оплатой убедитесь, что скидка применилась к вашему заказу.',
     nothing_found: 'Нет магазинов',
@@ -68,7 +69,7 @@ const i18n = {
     coupon_forms: 'coupon,coupons,coupons', shop_forms: 'store,stores,stores',
     verified: '✅ Verified today', faq_title: '❓ How to use promo codes',
     faq_q1: 'Where do I enter a promo code?', faq_a1: 'On the store website, look for a field called "Promo code" or "Discount code". It is usually on the checkout page near the order total.',
-    faq_q2: "Why doesn't the code work?", faq_a2: 'Check: 1) coupon expiration date; 2) minimum order amount; 3) whether the discount applies to your item. If the issue persists — message us on Telegram.',
+    faq_q2: "Why doesn't the code work?", faq_a2: 'Check: 1) coupon expiration date; 2) minimum order amount; 3) whether the discount applies to your item. If the issue persists, contact the store’s support.',
     faq_q3: 'How many times can I use one code?', faq_a3: 'Usually once per customer. Some codes work multiple times — this is noted in the coupon description.',
     faq_q4: 'How do I know a coupon is valid?', faq_a4: 'Dates and terms come from the affiliate feed. This is not a checkout test. Confirm the discount in your cart before payment.',
     nothing_found: 'No stores',
@@ -106,7 +107,7 @@ const i18n = {
     coupon_forms: '张优惠券', shop_forms: '家商店',
     verified: '✅ 今日验证', faq_title: '❓ 如何使用优惠码',
     faq_q1: '在哪里输入优惠码？', faq_a1: '在商店网站找到"优惠码"或"折扣码"字段，通常在结算页面订单总额旁边。',
-    faq_q2: '为什么优惠码无效？', faq_a2: '请检查：1) 优惠券有效期；2) 最低消费金额；3) 是否适用于您的商品。如有问题请在Telegram联系我们。',
+    faq_q2: '为什么优惠码无效？', faq_a2: '请检查：1) 优惠券有效期；2) 最低消费金额；3) 是否适用于您的商品。如有问题，请联系商店客服。',
     faq_q3: '一个优惠码能用几次？', faq_a3: '通常每位顾客使用一次。部分优惠码可重复使用，详见优惠券说明。',
     faq_q4: '如何确认优惠券有效？', faq_a4: '有效期和条件来自合作数据源，并非结账测试。付款前请确认购物车中的折扣。',
     nothing_found: '无商店',
@@ -144,7 +145,7 @@ const i18n = {
     coupon_forms: 'ta kupon', shop_forms: 'doʻkondan',
     verified: '✅ Bugun tekshirildi', faq_title: '❓ Promokodni qanday ishlatish',
     faq_q1: 'Promokodni qayerga kiritish kerak?', faq_a1: "Do'kon saytida \"Promokod\" yoki \"Chegirma kodi\" maydonini toping. Odatda buyurtma sahifasida, summa yonida joylashgan.",
-    faq_q2: 'Kod nega ishlamayapti?', faq_a2: "Tekshiring: 1) kupon muddati; 2) minimal buyurtma summasi; 3) chegirma mahsulotingizga tegishlimi. Muammo bo'lsa — Telegram orqali yozing.",
+    faq_q2: 'Kod nega ishlamayapti?', faq_a2: "Tekshiring: 1) kupon muddati; 2) minimal buyurtma summasi; 3) chegirma mahsulotingizga tegishlimi. Muammo davom etsa, do‘kon yordam xizmatiga murojaat qiling.",
     faq_q3: 'Bitta kodni necha marta ishlatish mumkin?', faq_a3: "Odatda bir xaridor uchun 1 marta. Ba'zi kodlar ko'p marta ishlaydi — kupon tavsifida ko'rsatilgan.",
     faq_q4: 'Kupon amal qilishini qanday bilish mumkin?', faq_a4: "Muddat va shartlar hamkor manbasidan olinadi. To'lovdan oldin savatda chegirma qo'llanganini tekshiring.",
     nothing_found: "Do'konlar yo'q",
@@ -164,12 +165,13 @@ const i18n = {
   }
 };
 
-let lang = localStorage.getItem('lang') || 'ru';
+let lang = window.couponLocale ? window.couponLocale() : 'ru';
 function t(key) { return (i18n[lang] && i18n[lang][key]) || i18n.ru[key] || key; }
 
 function setLang(l) {
+  if (!Object.hasOwn(i18n,l)) return;
   lang = l;
-  localStorage.setItem('lang', l);
+  try { localStorage.setItem('lang', l); } catch (_) {}
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
   // Static elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
@@ -191,6 +193,7 @@ function setLang(l) {
       const p = faqItems[i].querySelector('p'); if(p) p.textContent = t('faq_a'+n);
     }
   });
+  if (window.applyPageLanguage) window.applyPageLanguage(l);
   // Сигнал страницам, что язык изменился: каждая страница сама перерисовывает динамический контент
   // (слушатели 'langchange' — в app.js, top.js, store.js, blog-post.js)
   try { document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: l } })); } catch(e){}
@@ -205,4 +208,4 @@ document.addEventListener('click', function(e) {
 
 // ===== INIT =====
 applyTheme();
-if (lang !== 'ru') { try { setLang(lang); } catch(e){} } else { document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === 'ru')); }
+setLang(lang);

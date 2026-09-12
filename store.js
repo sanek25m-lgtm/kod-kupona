@@ -27,7 +27,7 @@ function renderStore() {
   const coupons = document.body.dataset.category ? data : data.filter(c => c.merchant === merchant);
   document.getElementById('store-info').textContent = couponOfferCount(coupons.length) + ' · Условия по данным партнёров';
   if (!document.body.dataset.staticPage) {
-    document.title = 'Промокоды ' + merchant + ' — Код купона';
+    document.title = couponTranslate('Промокоды') + ' ' + merchant + ' — Kodkupona';
     document.getElementById('store-name').textContent = merchant;
   }
   const logoEl = document.getElementById('store-logo');

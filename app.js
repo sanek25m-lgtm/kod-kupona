@@ -57,9 +57,9 @@ function renderFavList(){const favs=getFavs();const s=document.getElementById('f
 
 // ===== SHARE =====
 function shareUrl(c){const base=new URL('.',location.href).href;return base+'?merchant='+encodeURIComponent(c.merchant)+'&coupon='+c.id}
-function shareTg(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl(c))}&text=${encodeURIComponent('🔥 '+c.name)}`,'_blank')}
-function shareVk(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://vk.com/share.php?url=${encodeURIComponent(shareUrl(c))}&title=${encodeURIComponent(c.name)}`,'_blank')}
-function shareWa(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://wa.me/?text=${encodeURIComponent('🔥 '+c.name+' '+shareUrl(c))}`,'_blank')}
+function shareTg(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl(c))}&text=${encodeURIComponent('🔥 '+couponTranslate(c.name))}`,'_blank')}
+function shareVk(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://vk.com/share.php?url=${encodeURIComponent(shareUrl(c))}&title=${encodeURIComponent(couponTranslate(c.name))}`,'_blank')}
+function shareWa(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://wa.me/?text=${encodeURIComponent('🔥 '+couponTranslate(c.name)+' '+shareUrl(c))}`,'_blank')}
 
 // ===== REPORT =====
 
@@ -91,7 +91,7 @@ function renderAlphabet() {
   const usedLetters = new Set(merchants.map(m => m[0].toUpperCase()));
   const div = document.getElementById('alphabet');
   if (!div) return;
-  let html = `<button class="alpha-btn ${!currentLetter?'active':''}" data-letter="">Все</button>`;
+  let html = `<button class="alpha-btn ${!currentLetter?'active':''}" data-letter="">${t('cat_all')}</button>`;
   ALPHABET.filter(l=>usedLetters.has(l.toUpperCase())).forEach(l=>{
     html+=`<button class="alpha-btn ${currentLetter===l?'active':''}" data-letter="${esc(l)}">${l}</button>`;
   });
@@ -121,7 +121,7 @@ function renderHot() {
 }
 
 // ===== FILTER =====
-function getFiltered(){return data.filter(item=>{if(searchQuery){const q=searchQuery.toLowerCase();return item.name.toLowerCase().includes(q)||item.desc.toLowerCase().includes(q)||item.merchant.toLowerCase().includes(q)}const catMatch=!currentCategory||detectCategory(item)===currentCategory;const mMatch=currentMerchant==='all'||item.merchant===currentMerchant;const lMatch=!currentLetter||(item.merchant&&item.merchant[0].toUpperCase()===currentLetter.toUpperCase());return catMatch&&mMatch&&lMatch})}
+function getFiltered(){return data.filter(item=>{if(searchQuery){const q=searchQuery.toLowerCase();return (item.name+' '+couponTranslate(item.name)).toLowerCase().includes(q)||(item.desc+' '+couponTranslate(item.desc)).toLowerCase().includes(q)||item.merchant.toLowerCase().includes(q)}const catMatch=!currentCategory||detectCategory(item)===currentCategory;const mMatch=currentMerchant==='all'||item.merchant===currentMerchant;const lMatch=!currentLetter||(item.merchant&&item.merchant[0].toUpperCase()===currentLetter.toUpperCase());return catMatch&&mMatch&&lMatch})}
 
 // ===== RENDER CARDS =====
 function renderCards() {
