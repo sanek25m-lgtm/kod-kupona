@@ -79,20 +79,13 @@
       (code.trim() ? ' data-reveal-code="' + esc(code) + '" data-coupon-id="' + esc(c.id) + '"' : '') + '>' +
       esc(code.trim() ? text('get_btn', 'Показать код и перейти в магазин →') : text('visit_store', 'В магазин →')) + '</a>';
   };
-  window.couponReportUrl = function (c) {
-    const u = new URL('https://github.com/sanek25m-lgtm/' + project + '/issues/new');
-    u.searchParams.set('title', 'Купон ' + c.id + ': ' + c.merchant);
-    u.searchParams.set('body', 'ID: ' + c.id + '\nМагазин: ' + c.merchant + '\nОпишите проблему и условия применения. Не указывайте персональные данные.');
-    return u.href;
-  };
   window.couponTools = function (c) {
     const saved = revealed.get(String(c.id));
     const shown = saved && saved.code === String(c.code || '') && saved.target === couponTarget(c);
     return (c.ins ? '<details class="coupon-conditions"><summary>Условия предложения</summary><p>' + esc(c.ins) + '</p></details>' : '') +
       (String(c.code || '').trim() ? '<p class="coupon-reveal-note">' + esc(text('coupon_new_tab', 'Магазин откроется в новой вкладке.')) + '</p>' +
         '<div class="coupon-code" data-coupon-reveal aria-live="polite"' + (shown ? '' : ' hidden') + '><code>' + (shown ? esc(c.code) : '') + '</code> ' +
-        '<button type="button" class="copy-code"' + (shown ? ' data-copy="' + esc(c.code) + '"' : ' disabled') + '>' + esc(text('copy_code', 'Скопировать код')) + '</button></div>' : '') +
-      '<a class="report-link" href="' + esc(window.couponReportUrl(c)) + '" target="_blank" rel="nofollow noopener">Сообщить об ошибке (GitHub)</a>';
+        '<button type="button" class="copy-code"' + (shown ? ' data-copy="' + esc(c.code) + '"' : ' disabled') + '>' + esc(text('copy_code', 'Скопировать код')) + '</button></div>' : '');
   };
   function announce(message) {
     let status = document.getElementById('copy-status');

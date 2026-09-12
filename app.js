@@ -62,7 +62,6 @@ function shareVk(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://v
 function shareWa(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://wa.me/?text=${encodeURIComponent('🔥 '+c.name+' '+shareUrl(c))}`,'_blank')}
 
 // ===== REPORT =====
-function reportCoupon(id) { const c = data.find(d => d.id === id); if(c)window.open(couponReportUrl(c),'_blank','noopener'); }
 
 // ===== LOAD DATA =====
 async function loadData() {
@@ -199,8 +198,6 @@ document.addEventListener('click', function(e) {
   const catChip=e.target.closest('.cat-chip');
   if(catChip){currentCategory=catChip.dataset.cat||'';shownCount=PAGE_SIZE;renderCatChips();renderCards();return;}
 
-  const reportBtn=e.target.closest('[data-report]');
-  if(reportBtn){reportCoupon(reportBtn.dataset.report);return;}
 
   if(e.target.closest('.btn-secondary')){shownCount+=PAGE_SIZE;renderCards();}
 });
