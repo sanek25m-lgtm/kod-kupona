@@ -13,10 +13,10 @@ async function load() {
   }
   data = data.filter(couponForSite);
   merchant = document.body.dataset.merchant || document.body.dataset.category || new URLSearchParams(location.search).get('merchant') || '';
-  if (!merchant) { location.replace(new URL('catalog.html', couponSiteRoot)); return; }
+  if (!merchant) { location.replace(CouponI18n.localizeUrl(new URL('catalog.html', couponSiteRoot).href)); return; }
   if (!embedded) {
     const route = (window.COUPON_ROUTES.stores || {})[merchant];
-    if (route) { location.replace(new URL(route, couponSiteRoot)); return; }
+    if (route) { location.replace(CouponI18n.localizeUrl(new URL(route, couponSiteRoot).href)); return; }
     const meta = document.createElement('meta');
     meta.name = 'robots'; meta.content = 'noindex'; document.head.appendChild(meta);
   }

@@ -165,13 +165,12 @@ const i18n = {
   }
 };
 
-let lang = window.couponLocale ? window.couponLocale() : 'ru';
+let lang = 'ru';
 function t(key) { return (i18n[lang] && i18n[lang][key]) || i18n.ru[key] || key; }
 
 function setLang(l) {
-  if (!Object.hasOwn(i18n,l)) return;
-  lang = l;
-  try { localStorage.setItem('lang', l); } catch (_) {}
+  if (l!=='ru') { if(window.CouponI18n)void CouponI18n.setLanguage(l);return; }
+  lang = 'ru';
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
   // Static elements with data-i18n
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
@@ -193,7 +192,7 @@ function setLang(l) {
       const p = faqItems[i].querySelector('p'); if(p) p.textContent = t('faq_a'+n);
     }
   });
-  if (window.applyPageLanguage) window.applyPageLanguage(l);
+
   // Сигнал страницам, что язык изменился: каждая страница сама перерисовывает динамический контент
   // (слушатели 'langchange' — в app.js, top.js, store.js, blog-post.js)
   try { document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: l } })); } catch(e){}
@@ -202,7 +201,7 @@ function setLang(l) {
 // ===== EVENT DELEGATION (theme + lang on all pages) =====
 document.addEventListener('click', function(e) {
   if (e.target.closest('#theme-toggle')) { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme); applyTheme(); return; }
-  const langBtn = e.target.closest('[data-lang]');
+  const langBtn = e.target.closest('.lang-btn[data-lang]');
   if (langBtn) { setLang(langBtn.dataset.lang); return; }
 });
 

@@ -29,7 +29,7 @@ function renderCards() {
   const grid = document.getElementById('card-grid');
   const count = document.getElementById('count');
   if (!grid) return;
-  if (count) count.textContent = `${t('found')} ${items.length}`;
+  if (count) count.innerHTML = `<span>${t('found')}</span> ${items.length}`;
 
   if (items.length === 0) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;"><p style="font-size:2.5rem;">🔍</p><p style="margin-top:8px;font-weight:600;">${t('no_results')}</p></div>`;

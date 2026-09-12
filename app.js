@@ -5,7 +5,7 @@ let dataReady = false;
 let currentCategory = '';
 let currentLetter = '';
 let currentMerchant = 'all';
-let searchQuery = '';
+let searchQuery = getParam('q').toLowerCase().trim();
 let shownCount = 30;
 const PAGE_SIZE = 30;
 const ALPHABET = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -57,9 +57,9 @@ function renderFavList(){const favs=getFavs();const s=document.getElementById('f
 
 // ===== SHARE =====
 function shareUrl(c){const base=new URL('.',location.href).href;return base+'?merchant='+encodeURIComponent(c.merchant)+'&coupon='+c.id}
-function shareTg(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl(c))}&text=${encodeURIComponent('🔥 '+couponTranslate(c.name))}`,'_blank')}
-function shareVk(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://vk.com/share.php?url=${encodeURIComponent(shareUrl(c))}&title=${encodeURIComponent(couponTranslate(c.name))}`,'_blank')}
-function shareWa(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://wa.me/?text=${encodeURIComponent('🔥 '+couponTranslate(c.name)+' '+shareUrl(c))}`,'_blank')}
+function shareTg(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl(c))}&text=${encodeURIComponent('🔥 '+CouponI18n.translate(c.name))}`,'_blank')}
+function shareVk(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://vk.com/share.php?url=${encodeURIComponent(shareUrl(c))}&title=${encodeURIComponent(CouponI18n.translate(c.name))}`,'_blank')}
+function shareWa(id){const c=data.find(d=>d.id===id);if(c)window.open(`https://wa.me/?text=${encodeURIComponent('🔥 '+CouponI18n.translate(c.name)+' '+shareUrl(c))}`,'_blank')}
 
 // ===== REPORT =====
 
@@ -121,7 +121,7 @@ function renderHot() {
 }
 
 // ===== FILTER =====
-function getFiltered(){return data.filter(item=>{if(searchQuery){const q=searchQuery.toLowerCase();return (item.name+' '+couponTranslate(item.name)).toLowerCase().includes(q)||(item.desc+' '+couponTranslate(item.desc)).toLowerCase().includes(q)||item.merchant.toLowerCase().includes(q)}const catMatch=!currentCategory||detectCategory(item)===currentCategory;const mMatch=currentMerchant==='all'||item.merchant===currentMerchant;const lMatch=!currentLetter||(item.merchant&&item.merchant[0].toUpperCase()===currentLetter.toUpperCase());return catMatch&&mMatch&&lMatch})}
+function getFiltered(){return data.filter(item=>{if(searchQuery){const q=searchQuery.toLowerCase();return (item.name+' '+CouponI18n.translate(item.name)).toLowerCase().includes(q)||(item.desc+' '+CouponI18n.translate(item.desc)).toLowerCase().includes(q)||item.merchant.toLowerCase().includes(q)}const catMatch=!currentCategory||detectCategory(item)===currentCategory;const mMatch=currentMerchant==='all'||item.merchant===currentMerchant;const lMatch=!currentLetter||(item.merchant&&item.merchant[0].toUpperCase()===currentLetter.toUpperCase());return catMatch&&mMatch&&lMatch})}
 
 // ===== RENDER CARDS =====
 function renderCards() {
@@ -134,8 +134,8 @@ function renderCards() {
   const favs = getFavs();
 
   if (countEl) {
-    if(currentMerchant!=='all'){countEl.innerHTML=`<a href="index.html" class="filter-tag">${t('all_stores')}</a> · <strong>${esc(currentMerchant)}</strong> — ${items.length} ${plural(items.length,'coupon_forms')}`}
-    else{countEl.textContent=`${t('found')} ${items.length}`}
+    if(currentMerchant!=='all'){countEl.innerHTML=`<a href="index.html" class="filter-tag">${t('all_stores')}</a> · <strong>${esc(currentMerchant)}</strong> — <span>${items.length} ${plural(items.length,'coupon_forms')}</span>`}
+    else{countEl.innerHTML=`<span>${t('found')}</span> ${items.length}`}
   }
   if(loadMore)loadMore.style.display=items.length>shownCount?'block':'none';
 
@@ -212,7 +212,7 @@ document.addEventListener('langchange', () => {
 
 // ===== SEARCH =====
 const searchInput=document.getElementById('search-input');
-if(searchInput){searchInput.addEventListener('input',function(){searchQuery=this.value.toLowerCase().trim();shownCount=PAGE_SIZE;renderCards()})}
+if(searchInput){searchInput.value=searchQuery;searchInput.addEventListener('input',function(){searchQuery=this.value.toLowerCase().trim();shownCount=PAGE_SIZE;renderCards()})}
 
 // ===== СКЛОНЕНИЕ ЧИСЛИТЕЛЬНЫХ (ru — 1 купон / 2 купона / 5 купонов) =====
 function plural(n, key) {
@@ -229,7 +229,7 @@ function plural(n, key) {
 }
 
 // ===== GREETING =====
-function setGreeting(){const h=new Date().getHours();let g=t('greeting_night');if(h>=5&&h<12)g=t('greeting_morning');else if(h>=12&&h<18)g=t('greeting_day');else if(h>=18&&h<23)g=t('greeting_evening');const now=new Date();const active=data.filter(c=>{if(!c.finish)return true;const d=new Date(c.finish);return isNaN(d.getTime())||d>now}).length;const merchants=new Set(data.map(c=>c.merchant).filter(Boolean)).size;const el=document.getElementById('greeting');if(el)el.innerHTML=t('greet_tpl').replace('{g}',g).replace('{a}',active).replace('{cp}',plural(active,'coupon_forms')).replace('{m}',merchants).replace('{mp}',plural(merchants,'shop_forms'))}
+function setGreeting(){const h=new Date().getHours();let g=t('greeting_night');if(h>=5&&h<12)g=t('greeting_morning');else if(h>=12&&h<18)g=t('greeting_day');else if(h>=18&&h<23)g=t('greeting_evening');const now=new Date();const active=data.filter(c=>{if(!c.finish)return true;const d=new Date(c.finish);return isNaN(d.getTime())||d>now}).length;const merchants=new Set(data.map(c=>c.merchant).filter(Boolean)).size;const el=document.getElementById('greeting');if(el)el.innerHTML='<span>'+g+'</span> <span>Сейчас активно</span> <strong>'+active+'</strong> <span>'+plural(active,'coupon_forms')+'</span> <span>от</span> <strong>'+merchants+'</strong> <span>'+plural(merchants,'shop_forms')+'</span>'}
 
 // ===== LIVE FEED (имена и фразы — из i18n текущего языка) =====
 
@@ -245,3 +245,5 @@ loadData().then(()=>{
   const grid=document.getElementById('card-grid');
   if(grid&&!grid.querySelector('.card'))grid.innerHTML='<p>Не удалось загрузить предложения. Обновите страницу.</p>';
 });
+
+window.addEventListener?.('coupon-language-change',()=>{if(searchQuery)renderCards();});
