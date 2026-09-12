@@ -14,7 +14,7 @@
     if (cache.has(cacheKey)) return cache.get(cacheKey);
     const values = [];
     const template = source.replace(/\s+/g, ' ').trim().replace(/https?:\/\/[^\s<>]+|\b[A-Za-z0-9][A-Za-z0-9.-]*\.[a-z]{2,}\b|\d+(?:[ \u00a0]\d{3})*(?:[.,]\d+)?/g, value => '{' + (values.push(value) - 1) + '}');
-    const result = template.split(/((?<=[.!?;])\s+|\s+—\s+|\s+·\s+|\s+\|\s+)/).map(piece => {
+    let result = template.split(/((?<=[.!?;])\s+|\s+—\s+|\s+·\s+|\s+\|\s+)/).map(piece => {
       if (!russian.test(piece)) return piece.replace(/\{(\d+)\}/g, (_, i) => values[+i]);
       const leading = piece.match(/^[ /:;.!?]*/)[0], trailing = piece.match(/[ /:;.!?]*$/)[0];
       const core = piece.slice(leading.length, trailing.length ? -trailing.length : undefined);
@@ -24,6 +24,8 @@
       const translated = entry && entry[languages.indexOf(locale) - 1];
       return leading + (translated ? translated.replace(/\{(\d+)\}/g, (_, i) => values[ids[+i]]) : core.replace(/\{(\d+)\}/g, (_, i) => values[+i])) + trailing;
     }).join('');
+    if (locale === 'en') result = result.replace(/\b(\d+) offers?\b/g, (_, n) => n + (Number(n) === 1 ? ' offer' : ' offers'));
+    result = (source.match(/^\s*/)[0]) + result + (source.match(/\s*$/)[0]);
     if (cache.size > 10000) cache.clear();
     cache.set(cacheKey, result);
     return result;
@@ -44,7 +46,7 @@
     let saved = attributes.get(el);
     if (!saved) { saved = {}; attributes.set(el, saved); }
     for (const name of ['title', 'aria-label', 'placeholder', 'alt']) {
-      if (!el.hasAttribute(name)) continue;
+      if (!el.hasAttribute(name) || (el.id === 'search-input' && name === 'placeholder')) continue;
       if (!(name in saved)) saved[name] = el.getAttribute(name);
       const value = translate(saved[name]);
       if (el.getAttribute(name) !== value) el.setAttribute(name, value);
