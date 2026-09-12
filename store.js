@@ -34,7 +34,7 @@ function renderStore() {
   if (coupons[0] && coupons[0].logo && logoEl) logoEl.innerHTML = '<img src="' + esc(coupons[0].logo) + '" width="64" height="64" alt="">';
   document.getElementById('card-grid').innerHTML = coupons.map(c => {
     const label = couponDiscountLabel(c), description = couponDescription(c);
-    return '<article id="coupon-' + esc(c.id) + '" class="card"><div class="card-header"><a class="card-merchant" href="' + esc(merchantUrl(c.merchant)) + '">' + esc(c.merchant) + '</a>' + (label ? '<span class="discount-badge">' + esc(label) + '</span>' : '') + '</div><div class="card-body"><h3 class="card-title">' + esc(c.name) + '</h3>' + (description ? '<p class="card-desc">' + esc(description) + '</p>' : '') + couponTools(c) + '</div><div class="card-footer"><span class="expire">' + (c.finish ? 'до ' + esc(c.finish.slice(0,10)) : '') + '</span><a class="cta-btn cta-primary" href="' + esc(c.url_code || c.url) + '" target="_blank" rel="sponsored nofollow noopener">' + t('get_btn') + '</a></div></article>';
+    return '<article id="coupon-' + esc(c.id) + '" class="card"><div class="card-header"><a class="card-merchant" href="' + esc(merchantUrl(c.merchant)) + '">' + esc(c.merchant) + '</a>' + (label ? '<span class="discount-badge">' + esc(label) + '</span>' : '') + '</div><div class="card-body"><h3 class="card-title">' + esc(c.name) + '</h3>' + (description ? '<p class="card-desc">' + esc(description) + '</p>' : '') + couponTools(c) + '</div><div class="card-footer"><span class="expire">' + (c.finish ? 'до ' + esc(c.finish.slice(0,10)) : '') + '</span>' + couponAction(c) + '</div></article>';
   }).join('') || '<p>Предложения не найдены. <a href="catalog.html">Открыть каталог магазинов</a></p>';
 }
 

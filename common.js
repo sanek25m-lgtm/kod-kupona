@@ -13,7 +13,7 @@ const i18n = {
   ru: {
     nav_home: 'Главная', nav_top: 'Топ скидки', nav_faq: 'Как пользоваться', nav_blog: 'Блог',
     search_placeholder: 'Магазин или товар...', search_btn: 'Найти',
-    get_btn: 'Получить →', load_more: 'Показать ещё',
+    get_btn: 'Показать код и перейти в магазин →', copy_code: 'Скопировать код', visit_store: 'В магазин →', coupon_new_tab: 'Магазин откроется в новой вкладке.', coupon_copied: 'Промокод скопирован. Вставьте его в корзине магазина.', coupon_copy_failed: 'Код показан на карточке. Скопируйте его вручную, если браузер запретил копирование.', coupon_unavailable: 'Предложение временно недоступно', load_more: 'Показать ещё',
     found: 'Найдено:', all_stores: '✕ Все магазины', coupons_word: 'купонов',
     hot_title: '🔥 Истекают', no_results: 'Ничего не найдено',
     footer_text: '© 2026 Код купона · Все права защищены',
@@ -51,7 +51,7 @@ const i18n = {
   en: {
     nav_home: 'Home', nav_top: 'Top Deals', nav_faq: 'How to Use', nav_blog: 'Blog',
     search_placeholder: 'Store or product...', search_btn: 'Search',
-    get_btn: 'Get →', load_more: 'Load more',
+    get_btn: 'Show code and visit store →', copy_code: 'Copy code', visit_store: 'Visit store →', coupon_new_tab: 'The store opens in a new tab.', coupon_copied: 'Promo code copied. Paste it at checkout.', coupon_copy_failed: 'The code is shown on the card. Copy it manually if your browser blocked copying.', coupon_unavailable: 'Offer temporarily unavailable', load_more: 'Load more',
     found: 'Found:', all_stores: '✕ All stores', coupons_word: 'coupons',
     hot_title: '🔥 Expiring', no_results: 'Nothing found',
     footer_text: '© 2026 Kodkupona · All rights reserved',
@@ -89,7 +89,7 @@ const i18n = {
   zh: {
     nav_home: '首页', nav_top: '热门折扣', nav_faq: '使用说明', nav_blog: '博客',
     search_placeholder: '商店或商品...', search_btn: '搜索',
-    get_btn: '获取 →', load_more: '加载更多',
+    get_btn: '显示优惠码并前往商店 →', copy_code: '复制优惠码', visit_store: '前往商店 →', coupon_new_tab: '商店将在新标签页中打开。', coupon_copied: '优惠码已复制，请在结账时粘贴。', coupon_copy_failed: '优惠码已显示在卡片上。如果浏览器禁止复制，请手动复制。', coupon_unavailable: '优惠暂不可用', load_more: '加载更多',
     found: '找到:', all_stores: '✕ 所有商店', coupons_word: '优惠券',
     hot_title: '🔥 即将过期', no_results: '未找到结果',
     footer_text: '© 2026 Kodkupona · 版权所有',
@@ -127,7 +127,7 @@ const i18n = {
   uz: {
     nav_home: 'Bosh sahifa', nav_top: 'Eng yaxshi chegirmalar', nav_faq: 'Qanday ishlatish', nav_blog: 'Blog',
     search_placeholder: "Do'kon yoki mahsulot...", search_btn: 'Qidirish',
-    get_btn: 'Olish →', load_more: "Yana ko'rsatish",
+    get_btn: "Kodni ko‘rsatish va do‘konga o‘tish →", copy_code: 'Kodni nusxalash', visit_store: "Do‘konga o‘tish →", coupon_new_tab: "Do‘kon yangi varaqda ochiladi.", coupon_copied: 'Promokod nusxalandi. Uni buyurtma berishda kiriting.', coupon_copy_failed: 'Kod kartochkada ko‘rsatildi. Brauzer nusxalashni bloklasa, uni qo‘lda nusxalang.', coupon_unavailable: 'Taklif vaqtincha mavjud emas', load_more: "Yana ko'rsatish",
     found: 'Topildi:', all_stores: "✕ Barcha do'konlar", coupons_word: 'kuponlar',
     hot_title: '🔥 Tez orada tugaydi', no_results: 'Hech narsa topilmadi',
     footer_text: '© 2026 Kodkupona · Barcha huquqlar himoyalangan',

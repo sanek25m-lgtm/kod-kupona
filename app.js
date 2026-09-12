@@ -170,7 +170,7 @@ function renderCards() {
       </div>
       <div class="card-footer">
         ${c.finish?`<span class="expire">${t('until_word')} ${c.finish.slice(0,10)}</span>`:'<span></span>'}
-        <a class="cta-btn cta-primary" href="${esc(c.url_code||c.url)}" target="_blank" rel="sponsored nofollow noopener">${t('get_btn')}</a>
+        ${couponAction(c)}
       </div>
     </article>`;
   });

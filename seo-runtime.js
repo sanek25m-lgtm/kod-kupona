@@ -62,6 +62,23 @@
         && !new RegExp('(?:до|up\\s+to)\\s*[−-]?\\s*' + info.value + '\\s*%', 'i').test(text)) return '';
     return text;
   };
+  const revealed = new Map();
+  const text = (key, fallback) => typeof window.t === 'function' && window.t(key) !== key ? window.t(key) : fallback;
+  function validTarget(value) {
+    try {
+      const url = new URL(value);
+      return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? String(value) : '';
+    } catch (_) { return ''; }
+  }
+  function couponTarget(c) { return validTarget(c.url_code) || validTarget(c.url); }
+  window.couponAction = function (c) {
+    const target = couponTarget(c);
+    if (!target) return '<span class="coupon-unavailable">' + esc(text('coupon_unavailable', 'Предложение временно недоступно')) + '</span>';
+    const code = String(c.code || '');
+    return '<a class="cta-btn cta-primary" href="' + esc(target) + '" target="_blank" rel="sponsored nofollow noopener"' +
+      (code.trim() ? ' data-reveal-code="' + esc(code) + '" data-coupon-id="' + esc(c.id) + '"' : '') + '>' +
+      esc(code.trim() ? text('get_btn', 'Показать код и перейти в магазин →') : text('visit_store', 'В магазин →')) + '</a>';
+  };
   window.couponReportUrl = function (c) {
     const u = new URL('https://github.com/sanek25m-lgtm/' + project + '/issues/new');
     u.searchParams.set('title', 'Купон ' + c.id + ': ' + c.merchant);
@@ -69,8 +86,12 @@
     return u.href;
   };
   window.couponTools = function (c) {
+    const saved = revealed.get(String(c.id));
+    const shown = saved && saved.code === String(c.code || '') && saved.target === couponTarget(c);
     return (c.ins ? '<details class="coupon-conditions"><summary>Условия предложения</summary><p>' + esc(c.ins) + '</p></details>' : '') +
-      (c.code ? '<div class="coupon-code"><code>' + esc(c.code) + '</code> <button type="button" class="copy-code" data-copy="' + esc(c.code) + '">Скопировать</button></div>' : '') +
+      (String(c.code || '').trim() ? '<p class="coupon-reveal-note">' + esc(text('coupon_new_tab', 'Магазин откроется в новой вкладке.')) + '</p>' +
+        '<div class="coupon-code" data-coupon-reveal aria-live="polite"' + (shown ? '' : ' hidden') + '><code>' + (shown ? esc(c.code) : '') + '</code> ' +
+        '<button type="button" class="copy-code"' + (shown ? ' data-copy="' + esc(c.code) + '"' : ' disabled') + '>' + esc(text('copy_code', 'Скопировать код')) + '</button></div>' : '') +
       '<a class="report-link" href="' + esc(window.couponReportUrl(c)) + '" target="_blank" rel="nofollow noopener">Сообщить об ошибке (GitHub)</a>';
   };
   function announce(message) {
@@ -86,19 +107,49 @@
     clearTimeout(announce.timer);
     announce.timer = setTimeout(() => { status.textContent = ''; }, 4500);
   }
-  document.addEventListener('click', async function (event) {
-    const button = event.target.closest('[data-copy]');
-    if (!button) return;
-    event.preventDefault();
-    const text = button.dataset.copy;
-    if (!text) return;
+  async function copyCode(code) {
     try {
       if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
-      await navigator.clipboard.writeText(text);
-      announce('Промокод скопирован.');
+      await navigator.clipboard.writeText(code);
+      announce(text('coupon_copied', 'Промокод скопирован. Вставьте его в корзине магазина.'));
     } catch (_) {
-      announce('Не удалось скопировать автоматически. Выделите код на карточке и скопируйте вручную.');
+      announce(text('coupon_copy_failed', 'Код показан на карточке. Скопируйте его вручную, если браузер запретил копирование.'));
     }
+  }
+  function activateCoupon(event) {
+    const action = event.target.closest('a[data-reveal-code]');
+    if (!action || event.defaultPrevented) return false;
+    const target = validTarget(action.getAttribute('href'));
+    const card = action.closest('.card');
+    const panel = card && card.querySelector('[data-coupon-reveal]');
+    const code = action.dataset.revealCode;
+    if (!target || !code || !code.trim() || !panel) {
+      event.preventDefault();
+      announce(text('coupon_unavailable', 'Предложение временно недоступно'));
+      return true;
+    }
+    revealed.set(String(action.dataset.couponId), { code, target });
+    panel.querySelector('code').textContent = code;
+    const copy = panel.querySelector('.copy-code');
+    copy.dataset.copy = code;
+    copy.disabled = false;
+    panel.hidden = false;
+    // Keep native link navigation in the same user gesture. Clipboard failure
+    // must not cancel or replace the original affiliate URL.
+    copyCode(code);
+    return true;
+  }
+  document.addEventListener('click', function (event) {
+    if (event.button && event.button !== 0) return;
+    if (activateCoupon(event)) return;
+    const button = event.target.closest('[data-copy]');
+    const panel = button && button.closest('[data-coupon-reveal]');
+    if (!button || button.disabled || !panel || panel.hidden || !button.dataset.copy) return;
+    event.preventDefault();
+    copyCode(button.dataset.copy);
+  });
+  document.addEventListener('auxclick', function (event) {
+    if (event.button === 1) activateCoupon(event);
   });
   // Legacy info links are retained as navigation, not as duplicate content.
   if (/\/info\.html$/.test(location.pathname)) {

@@ -3,6 +3,10 @@
 .seo-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;padding:12px 0}.seo-links a{padding:8px;overflow-wrap:anywhere}
 .seo-breadcrumbs,.seo-footer{padding:16px 20px;font-size:.875rem;line-height:1.7;overflow-wrap:anywhere}.seo-footer{text-align:center}
 .coupon-code{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0;max-width:100%}
+.coupon-code[hidden]{display:none!important}
+.coupon-reveal-note,.coupon-unavailable{font-size:.8125rem;line-height:1.5;color:var(--text-secondary,inherit)}
+.card-footer{flex-wrap:wrap;gap:10px}
+.card-footer [data-reveal-code]{white-space:normal;text-align:center;max-width:100%;min-height:44px;flex:1 1 220px;justify-content:center}
 .coupon-code code{font-size:1rem;font-weight:700;user-select:all;overflow-wrap:anywhere;white-space:normal}
 .copy-code{font:inherit;font-size:.875rem;cursor:pointer;padding:8px 12px;border:1px solid currentColor;border-radius:8px;background:transparent;color:inherit}
 .report-link{display:block;font-size:.875rem;line-height:1.5;padding:8px 14px;overflow-wrap:anywhere}
