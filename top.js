@@ -4,7 +4,7 @@ let data = [];
 let searchQuery = '';
 
 async function loadData() {
-  const res = await fetch('coupons_data.json');
+  const res = await fetch(new URL('data/browser-coupons.json', couponSiteRoot));
   if (!res.ok) throw new Error('HTTP ' + res.status);
   data = (await res.json()).filter(couponForSite);
   renderCards();
@@ -39,11 +39,12 @@ function renderCards() {
   let html = '';
   items.forEach((c, i) => {
     const d = getDiscount(c.name);
-    const badge = d > 0 ? `<span class="discount-badge ${badgeClass(d)}">−${d}%</span>` : '';
+    const label = couponDiscountLabel(c), description = couponDescription(c);
+    const badge = label ? `<span class="discount-badge ${badgeClass(d)}">${esc(label)}</span>` : '';
     const delay = Math.min(i,8)*.03;
 
     html += `
-    <article class="card" style="animation:fadeIn .25s ease ${delay}s backwards">
+    <article id="coupon-${esc(c.id)}" class="card" style="animation:fadeIn .25s ease ${delay}s backwards">
       <div class="card-header">
         <div class="card-logo">${c.logo ? `<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.style.display='none'" />` : `<span class="no-logo">${(c.merchant||'?')[0].toUpperCase()}</span>`}</div>
         <a href="${esc(merchantUrl(c.merchant))}" class="card-merchant card-merchant-link">${esc(c.merchant)}</a>
@@ -51,7 +52,7 @@ function renderCards() {
       </div>
       <div class="card-body">
         <h3 class="card-title">${esc(c.name)}</h3>
-        ${c.desc && c.desc !== c.name ? `<p class="card-desc">${esc(c.desc)}</p>` : ''}
+        ${description?`<p class="card-desc">${esc(description)}</p>`:''}
         ${couponTools(c)}
       </div>
       <div class="card-footer">

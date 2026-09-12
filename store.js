@@ -7,7 +7,7 @@ async function load() {
   const embedded = document.getElementById('page-coupons');
   if (embedded) data = JSON.parse(embedded.textContent);
   else {
-    const res = await fetch(new URL('coupons_data.json', couponSiteRoot));
+    const res = await fetch(new URL('data/browser-coupons.json', couponSiteRoot));
     if (!res.ok) throw new Error('Could not load offers');
     data = await res.json();
   }
@@ -25,7 +25,7 @@ async function load() {
 
 function renderStore() {
   const coupons = document.body.dataset.category ? data : data.filter(c => c.merchant === merchant);
-  document.getElementById('store-info').textContent = coupons.length + ' предложений · Условия по данным партнёров';
+  document.getElementById('store-info').textContent = couponOfferCount(coupons.length) + ' · Условия по данным партнёров';
   if (!document.body.dataset.staticPage) {
     document.title = 'Промокоды ' + merchant + ' — Код купона';
     document.getElementById('store-name').textContent = merchant;
@@ -33,9 +33,8 @@ function renderStore() {
   const logoEl = document.getElementById('store-logo');
   if (coupons[0] && coupons[0].logo && logoEl) logoEl.innerHTML = '<img src="' + esc(coupons[0].logo) + '" width="64" height="64" alt="">';
   document.getElementById('card-grid').innerHTML = coupons.map(c => {
-    const match = String(c.name).match(/(\d{1,3})\s*%/);
-    const discount = match && +match[1] <= 100 ? +match[1] : 0;
-    return '<article id="coupon-' + esc(c.id) + '" class="card"><div class="card-header"><a class="card-merchant" href="' + esc(merchantUrl(c.merchant)) + '">' + esc(c.merchant) + '</a>' + (discount ? '<span class="discount-badge">−' + discount + '%</span>' : '') + '</div><div class="card-body"><h3 class="card-title">' + esc(c.name) + '</h3>' + (c.desc && c.desc !== c.name ? '<p class="card-desc">' + esc(c.desc) + '</p>' : '') + couponTools(c) + '</div><div class="card-footer"><span class="expire">' + (c.finish ? 'до ' + esc(c.finish.slice(0,10)) : '') + '</span><a class="cta-btn cta-primary" href="' + esc(c.url_code || c.url) + '" target="_blank" rel="sponsored nofollow noopener">' + t('get_btn') + '</a></div></article>';
+    const label = couponDiscountLabel(c), description = couponDescription(c);
+    return '<article id="coupon-' + esc(c.id) + '" class="card"><div class="card-header"><a class="card-merchant" href="' + esc(merchantUrl(c.merchant)) + '">' + esc(c.merchant) + '</a>' + (label ? '<span class="discount-badge">' + esc(label) + '</span>' : '') + '</div><div class="card-body"><h3 class="card-title">' + esc(c.name) + '</h3>' + (description ? '<p class="card-desc">' + esc(description) + '</p>' : '') + couponTools(c) + '</div><div class="card-footer"><span class="expire">' + (c.finish ? 'до ' + esc(c.finish.slice(0,10)) : '') + '</span><a class="cta-btn cta-primary" href="' + esc(c.url_code || c.url) + '" target="_blank" rel="sponsored nofollow noopener">' + t('get_btn') + '</a></div></article>';
   }).join('') || '<p>Предложения не найдены. <a href="catalog.html">Открыть каталог магазинов</a></p>';
 }
 
