@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="80" y="250" font-family="Arial,sans-serif" font-size="72" font-weight="bold" fill="white">🏷️ Код купона</text>
+  <text x="80" y="340" font-family="Arial,sans-serif" font-size="42" fill="rgba(255,255,255,.9)">Скидки до 90% каждый день</text>
+  <text x="80" y="410" font-family="Arial,sans-serif" font-size="36" fill="rgba(255,255,255,.7)">Промокоды от 500+ магазинов</text>
+  <rect x="80" y="460" width="280" height="60" rx="12" fill="#F59E0B"/>
+  <text x="130" y="498" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#1A1D23">Получить скидку</text>
+</svg>
