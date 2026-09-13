@@ -6,4 +6,5 @@ Disallow: /node_modules/
 Disallow: /auto-update.js
 Disallow: /dev-server.js
 
-Sitemap: https://sanek25m-lgtm.github.io/kod-kupona/sitemap.xml
+Sitemap: http://kodkupona.art/sitemap.xml
+
