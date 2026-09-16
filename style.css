@@ -333,3 +333,8 @@ footer { background: var(--header-bg); padding: 20px; margin-top: 40px; }
 
 /* Crawlable language navigation on desktop and mobile. */
 .lang.lang-switch{display:flex;flex-wrap:wrap;gap:3px;max-width:100%}.lang a{padding:6px 8px;color:var(--text-secondary);text-decoration:none;border-radius:6px;font-size:12px;white-space:nowrap}.lang a.on{background:var(--primary);color:white}.lang a:focus-visible{outline:2px solid var(--primary)}.header-inner{flex-wrap:wrap;gap:8px}.language-status{font-size:12px}.translation-note{max-width:1200px;margin:20px auto;padding:12px 20px;color:var(--text-secondary);font-size:12px}
+
+
+/* Distinguish store promotions that do not contain a coupon code. */
+.offer-kind{display:inline-flex;align-items:center;max-width:100%;margin-left:auto;padding:4px 8px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:.72rem;font-weight:700;line-height:1.2;text-align:center}
+@media (max-width:640px){.offer-kind{margin-left:0}}

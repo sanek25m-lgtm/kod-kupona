@@ -155,6 +155,7 @@ function renderCards() {
       <div class="card-header">
         <div class="card-logo">${c.logo?`<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.style.display='none'" />`:`<span class="no-logo">${(c.merchant||'?')[0].toUpperCase()}</span>`}</div>
         <a href="${esc(merchantUrl(c.merchant))}" class="card-merchant card-merchant-link">${esc(c.merchant)}</a>
+        ${!String(c.code||'').trim()?'<span class="offer-kind">Акция без промокода</span>':''}
         ${badge}
       </div>
       <div class="card-body">
