@@ -6,5 +6,5 @@ Disallow: /node_modules/
 Disallow: /auto-update.js
 Disallow: /dev-server.js
 
-Sitemap: http://kodkupona.art/sitemap.xml
+Sitemap: https://kodkupona.art/sitemap.xml
 
