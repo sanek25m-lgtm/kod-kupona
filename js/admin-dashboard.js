@@ -105,7 +105,8 @@
       const date=times.length?new Date(Math.max(...times)) : null;
       const last=date?new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)':'пока не было';
       const report=data.report;
-      $('product-catalog-status').textContent='Последнее успешное обновление: '+last+(report?'. Обновлено фидов: '+report.succeeded+', ошибок: '+report.failed+'.':'');
+      $('product-catalog-status').textContent='Последнее успешное обновление: '+last+(report?'. Обновлено фидов: '+report.succeeded+', из них пустых: '+(report.empty||0)+', ошибок: '+report.failed+'.':'');
+      if(report?.feeds){const errors=report.feeds.filter(x=>x.status==='error');if(errors.length)$('product-catalog-status').textContent+=' '+errors.map(x=>x.merchant+': '+x.reason).join('; ');}
     } catch(e){if(token)$('product-catalog-status').textContent='Данные каталога недоступны: '+e.message;}
   }
   $('admitad-search').addEventListener('input',()=>{visibleOffers=20;showOffers();});
