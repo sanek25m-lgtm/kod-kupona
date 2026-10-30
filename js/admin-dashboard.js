@@ -92,8 +92,21 @@
       for(const [id,value] of [['product-programs',data.connected_programs],['product-feeds',data.feeds],['product-links',data.programs_with_feed_urls]]) $(id).textContent=Number(value).toLocaleString('ru-RU');
       const date=new Date(data.checked_at);
       $('product-checked').textContent=Number.isNaN(date.getTime())?'Время проверки недоступно':'Проверено: '+new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)';
-      $('product-status').textContent='Это список зарубежных источников Admitad без AliExpress и Alibaba. Товарный каталог и его автоматическая загрузка ещё не подключены.';
+      $('product-status').textContent='Это количество подходящих источников. Данные о загруженных товарах показаны ниже.';
     } catch(error) {if(token)$('product-status').textContent='Не удалось получить список фидов: '+error.message;}
+  }
+  async function loadProductCatalog(){
+    try {
+      const res=await fetch('/data/products/manifest.json',{cache:'no-store'});
+      if(!res.ok)throw new Error('сервис недоступен');
+      const data=await res.json();if(!token)return;
+      $('products-published').textContent=Number(data.products||0).toLocaleString('ru-RU');
+      const times=(data.feeds||[]).map(x=>new Date(x.updated_at)).filter(x=>!Number.isNaN(x.getTime()));
+      const date=times.length?new Date(Math.max(...times)) : null;
+      const last=date?new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)':'пока не было';
+      const report=data.report;
+      $('product-catalog-status').textContent='Последнее успешное обновление: '+last+(report?'. Обновлено фидов: '+report.succeeded+', ошибок: '+report.failed+'.':'');
+    } catch(e){if(token)$('product-catalog-status').textContent='Данные каталога недоступны: '+e.message;}
   }
   $('admitad-search').addEventListener('input',()=>{visibleOffers=20;showOffers();});
   $('admitad-more').addEventListener('click',()=>{visibleOffers+=20;showOffers();});
@@ -102,7 +115,7 @@
     if(!window.google?.accounts?.oauth2){alert('Google ещё загружается. Попробуйте снова.');return;}
     google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async response=>{
       if(response.error){alert('Не удалось войти: '+response.error);return;}
-      token=response.access_token;$('signin').hidden=true;$('dashboard').hidden=false;$('logout').hidden=false;refresh();loadAdmitad();loadProductInventory();
+      token=response.access_token;$('signin').hidden=true;$('dashboard').hidden=false;$('logout').hidden=false;refresh();loadAdmitad();loadProductInventory();loadProductCatalog();
     }}).requestAccessToken();
   });
   $('logout').addEventListener('click',()=>{const old=token;token=null;generation++;feedGeneration++;admitadRows=[];$('admitad-search').value='';$('admitad-offers').replaceChildren();$('dashboard').hidden=true;$('signin').hidden=false;$('logout').hidden=true;if(old)google.accounts.oauth2.revoke(old,()=>{});});
