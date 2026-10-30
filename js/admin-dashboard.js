@@ -88,10 +88,11 @@
       if(!response.ok)throw new Error('сведения пока недоступны');
       const data=await response.json();
       if(!token)return;
+      if(data.scope!=='foreign_non_cis_without_ali')throw new Error('ожидается первая проверка зарубежных фидов');
       for(const [id,value] of [['product-programs',data.connected_programs],['product-feeds',data.feeds],['product-links',data.programs_with_feed_urls]]) $(id).textContent=Number(value).toLocaleString('ru-RU');
       const date=new Date(data.checked_at);
       $('product-checked').textContent=Number.isNaN(date.getTime())?'Время проверки недоступно':'Проверено: '+new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)';
-      $('product-status').textContent='Это список источников Admitad. Товарный каталог и его автоматическая загрузка ещё не подключены.';
+      $('product-status').textContent='Это список зарубежных источников Admitad без AliExpress и Alibaba. Товарный каталог и его автоматическая загрузка ещё не подключены.';
     } catch(error) {if(token)$('product-status').textContent='Не удалось получить список фидов: '+error.message;}
   }
   $('admitad-search').addEventListener('input',()=>{visibleOffers=20;showOffers();});
