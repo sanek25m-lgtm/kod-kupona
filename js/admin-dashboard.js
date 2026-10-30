@@ -67,7 +67,7 @@
       const metadata=metadataResponse.ok?await metadataResponse.json():null;
       if(run!==feedGeneration||!token)return;
       admitadRows=all.filter(x=>x&&x.source==='admitad').sort((a,b)=>String(a.merchant||'').localeCompare(String(b.merchant||''),'ru')||String(a.name||'').localeCompare(String(b.name||''),'ru'));
-      const codes=admitadRows.filter(x=>String(x.code||'').trim()).length;
+      const codes=admitadRows.filter(x=>x.kind==='promocode'||(x.kind!=='action'&&String(x.code||'').trim())).length;
       const merchants=new Set(admitadRows.map(x=>String(x.merchant||'').trim()).filter(Boolean));
       const number=n=>n.toLocaleString('ru-RU');
       $('admitad-total').textContent=number(admitadRows.length);
