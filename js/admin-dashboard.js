@@ -82,6 +82,18 @@
       if(run===feedGeneration&&token){$('admitad-status').textContent='Не удалось загрузить данные Admitad: '+e.message;$('admitad-updated').textContent='Время обновления недоступно';}
     }
   }
+  async function loadProductInventory() {
+    try {
+      const response=await fetch('/data/admitad-product-inventory.json',{cache:'no-store'});
+      if(!response.ok)throw new Error('сведения пока недоступны');
+      const data=await response.json();
+      if(!token)return;
+      for(const [id,value] of [['product-programs',data.connected_programs],['product-feeds',data.feeds],['product-links',data.programs_with_feed_urls]]) $(id).textContent=Number(value).toLocaleString('ru-RU');
+      const date=new Date(data.checked_at);
+      $('product-checked').textContent=Number.isNaN(date.getTime())?'Время проверки недоступно':'Проверено: '+new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)';
+      $('product-status').textContent='Это список источников Admitad. Товарный каталог и его автоматическая загрузка ещё не подключены.';
+    } catch(error) {if(token)$('product-status').textContent='Не удалось получить список фидов: '+error.message;}
+  }
   $('admitad-search').addEventListener('input',()=>{visibleOffers=20;showOffers();});
   $('admitad-more').addEventListener('click',()=>{visibleOffers+=20;showOffers();});
 
@@ -89,7 +101,7 @@
     if(!window.google?.accounts?.oauth2){alert('Google ещё загружается. Попробуйте снова.');return;}
     google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:async response=>{
       if(response.error){alert('Не удалось войти: '+response.error);return;}
-      token=response.access_token;$('signin').hidden=true;$('dashboard').hidden=false;$('logout').hidden=false;refresh();loadAdmitad();
+      token=response.access_token;$('signin').hidden=true;$('dashboard').hidden=false;$('logout').hidden=false;refresh();loadAdmitad();loadProductInventory();
     }}).requestAccessToken();
   });
   $('logout').addEventListener('click',()=>{const old=token;token=null;generation++;feedGeneration++;admitadRows=[];$('admitad-search').value='';$('admitad-offers').replaceChildren();$('dashboard').hidden=true;$('signin').hidden=false;$('logout').hidden=true;if(old)google.accounts.oauth2.revoke(old,()=>{});});
