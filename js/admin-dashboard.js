@@ -101,11 +101,13 @@
       if(!res.ok)throw new Error('сервис недоступен');
       const data=await res.json();if(!token)return;
       $('products-published').textContent=Number(data.products||0).toLocaleString('ru-RU');
+      $('product-stores').textContent=Number(data.stores??(data.feeds||[]).length).toLocaleString('ru-RU');
       const times=(data.feeds||[]).map(x=>new Date(x.updated_at)).filter(x=>!Number.isNaN(x.getTime()));
       const date=times.length?new Date(Math.max(...times)) : null;
       const last=date?new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(date)+' (Екатеринбург)':'пока не было';
       const report=data.report;
-      $('product-catalog-status').textContent='Последнее успешное обновление: '+last+(report?'. Обновлено фидов: '+report.succeeded+', из них пустых: '+(report.empty||0)+', ошибок: '+report.failed+'.':'');
+      const maxPerStore=Math.max(0,...(data.feeds||[]).map(x=>Number(x.count)||0));
+      $('product-catalog-status').textContent='До 50 самых дорогих товаров на магазин по исходным суммам (без пересчёта валют). Магазинов: '+(data.stores??(data.feeds||[]).length)+', максимум сейчас в одном магазине: '+maxPerStore+'. Последнее успешное обновление: '+last+(report?'. Проверено фидов: '+report.succeeded+', пустых: '+(report.empty||0)+', ошибок: '+report.failed+'.':'');
       if(report?.feeds){const errors=report.feeds.filter(x=>x.status==='error');if(errors.length)$('product-catalog-status').textContent+=' '+errors.map(x=>x.merchant+': '+x.reason).join('; ');}
     } catch(e){if(token)$('product-catalog-status').textContent='Данные каталога недоступны: '+e.message;}
   }
