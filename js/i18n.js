@@ -169,6 +169,7 @@
       await load(target);
       if(request!==requested)return false;
       language=target;
+      updateAllLanguagesLink(document.getElementById('site-language-all'));
       if(seo && options.history!=='none') {
         const url=new URL(languagePath(pagePath,target),root);url.search=location.search;url.hash=location.hash;
         if(url.href!==location.href)history[options.history==='replace'?'replaceState':'pushState'](history.state,'',url);
@@ -183,6 +184,19 @@
       return false;
     }
   }
+  const allLanguageLabels={ru:'Все языки',en:'All languages',kk:'Барлық тілдер',tt:'Барлык телләр',uz:'Barcha tillar',zh:'所有语言'};
+  function updateAllLanguagesLink(link) {
+    if(!link)return;
+    const browserLanguage=String(navigator.language||'en').toLowerCase().split('-')[0];
+    let target=/^[a-z]{2,3}$/.test(browserLanguage)?browserLanguage:'en';
+    if(target===language)target=language==='en'?'ru':'en';
+    const source=new URL(languagePath(pagePath,language),root);
+    source.search=location.search;source.hash=location.hash;
+    const url=new URL('https://translate.google.com/translate');
+    url.searchParams.set('sl',language);url.searchParams.set('tl',target);url.searchParams.set('u',source.href);
+    link.href=url.href;link.textContent=allLanguageLabels[language]||allLanguageLabels.en;
+    link.setAttribute('aria-label',allLanguageLabels[language]||allLanguageLabels.en);
+  }
   function boot() {
     let controls=document.querySelector('.lang');
     if(!controls) {
@@ -193,7 +207,9 @@
     controls.setAttribute('aria-label','Выбрать язык');controls.removeAttribute('title');controls.removeAttribute('role');
     const select=document.createElement('select');select.setAttribute('aria-label','Выбрать язык');select.id='site-language';
     Object.entries(names).forEach(([code,name])=>{const option=document.createElement('option');option.value=code;option.textContent=name;option.lang=code;select.appendChild(option);});
-    controls.replaceChildren(select);
+    const allLanguages=document.createElement('a');allLanguages.id='site-language-all';allLanguages.className='lang-all';allLanguages.target='_blank';allLanguages.rel='noopener noreferrer';
+    updateAllLanguagesLink(allLanguages);
+    controls.replaceChildren(select,allLanguages);
     select.addEventListener('change',()=>{void setLanguage(select.value);});
     const status=document.createElement('span');status.id='language-status';status.setAttribute('role','status');status.className='language-status';controls.after(status);
     if(!document.getElementById('translation-note')) {
