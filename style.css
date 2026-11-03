@@ -331,8 +331,8 @@ footer { background: var(--header-bg); padding: 20px; margin-top: 40px; }
   footer { margin-top: 20px; }
 }
 
-/* Crawlable language navigation on desktop and mobile. */
-.lang.lang-switch{display:flex;flex-wrap:wrap;gap:3px;max-width:100%}.lang a{padding:6px 8px;color:var(--text-secondary);text-decoration:none;border-radius:6px;font-size:12px;white-space:nowrap}.lang a.on{background:var(--primary);color:white}.lang a:focus-visible{outline:2px solid var(--primary)}.header-inner{flex-wrap:wrap;gap:8px}.language-status{font-size:12px}.translation-note{max-width:1200px;margin:20px auto;padding:12px 20px;color:var(--text-secondary);font-size:12px}
+/* Compact language dropdown on desktop and mobile. */
+.lang{display:flex;align-items:center;max-width:100%}.lang select{max-width:150px;padding:8px 30px 8px 10px;border:1px solid #d8d5d0;border-radius:10px;background:#fffaf5;color:var(--text,#183329);font:inherit;font-size:13px;cursor:pointer}.lang select:focus-visible{outline:2px solid #ff5a1f;outline-offset:2px}.header-inner{flex-wrap:wrap;gap:8px}.language-status{font-size:12px}.translation-note{max-width:1200px;margin:20px auto;padding:12px 20px;color:var(--text-secondary);font-size:12px}
 
 
 /* Distinguish store promotions that do not contain a coupon code. */

@@ -117,15 +117,7 @@
     if(note){note.hidden=language==='ru';note.textContent=translate('Перевод условий выполнен автоматически. Проверьте условия на сайте магазина.');}
     document.documentElement.lang=language;
     document.documentElement.dataset.lang=language;
-    document.querySelectorAll('.lang button,.lang a').forEach(button=>{
-      const active=canonical(button.dataset.l)===language;
-      button.classList.toggle('on',active);
-      if(button.tagName==='BUTTON')button.setAttribute('aria-pressed',String(active));
-      if(button.tagName==='A') {
-        if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
-        const url=new URL(languagePath(pagePath,button.dataset.l),root);url.search=location.search;url.hash=location.hash;button.href=url.href;
-      }
-    });
+    document.querySelectorAll('.lang select').forEach(select=>{select.value=language;});
     document.querySelectorAll('.lang').forEach(el=>el.setAttribute('aria-label',translate('Выбрать язык')));
     if(seo) {
       const url=publishedRoot+languagePath(pagePath,language);
@@ -198,17 +190,12 @@
       const header=document.querySelector('.header-inner')||document.querySelector('header')||document.body;
       header.appendChild(controls);
     }
-    controls.setAttribute('role','group');controls.setAttribute('aria-label','Выбрать язык');controls.removeAttribute('title');
-    controls.replaceChildren(...Object.entries(names).map(([code,name])=>{
-      const button=document.createElement(seo?'a':'button');
-      if(seo){button.href=new URL(languagePath(pagePath,code),root).href;button.hreflang=code;}else button.type='button';
-      button.dataset.l=code;button.textContent=name;button.lang=code;return button;
-    }));
+    controls.setAttribute('aria-label','Выбрать язык');controls.removeAttribute('title');controls.removeAttribute('role');
+    const select=document.createElement('select');select.setAttribute('aria-label','Выбрать язык');select.id='site-language';
+    Object.entries(names).forEach(([code,name])=>{const option=document.createElement('option');option.value=code;option.textContent=name;option.lang=code;select.appendChild(option);});
+    controls.replaceChildren(select);
+    select.addEventListener('change',()=>{void setLanguage(select.value);});
     const status=document.createElement('span');status.id='language-status';status.setAttribute('role','status');status.className='language-status';controls.after(status);
-    document.addEventListener('click',event=>{
-      const button=event.target.closest('.lang button,.lang a');
-      if(button && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button===0){event.preventDefault();event.stopImmediatePropagation();void setLanguage(button.dataset.l);}
-    },true);
     if(!document.getElementById('translation-note')) {
       const note=document.createElement('p');note.id='translation-note';note.className='wrap translation-note';note.setAttribute('translate','no');note.hidden=true;(document.querySelector('main')||document.body).appendChild(note);
     }
