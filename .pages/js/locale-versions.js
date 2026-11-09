@@ -1,1 +1,1 @@
-window.COUPON_LOCALE_VERSIONS={"en": "e7668d2e3c69", "kk": "3cfabdc572f0", "tt": "46a5c79b4b93", "uz": "48d8158eda07", "zh": "060a54f2a272"};
+window.COUPON_LOCALE_VERSIONS={"en": "3413c2a8a373", "kk": "429faab0506e", "tt": "9deda365debd", "uz": "9dd127a0ddec", "zh": "4630510687eb"};
